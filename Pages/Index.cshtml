@@ -4,7 +4,58 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="card" style=" margin-top: 20px">
+    <div class="card-header">
+        <h3>How to make Barista Coffee</h3>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            <div class="form-group">
+                <div class="row">
+                    <h3>Choose a Coffee to Make</h3>
+                    <select asp-for="SelectedCoffeeName" class="col-lg-2" asp-items="@(new SelectList(Model.CoffeeTypes, "Name", "Name"))">
+                    </select>
+                    <p></p>
+                    <input type="submit" value="Submit" asp-action="Index" />
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="card-footer">
+        <div class="row">
+            @if (Model.SelectedCoffee != null)
+            {
+                <h3>@Model.SelectedCoffee.Name </h3>
+                <h4>@Model.SelectedCoffee.Description</h4>
+                <p>Shots of Coffee: @Model.SelectedCoffee.CoffeeShots</p>
+                <p>Does it have milk? @Model.SelectedCoffee.ContainsMilk</p>
+                <p>Does it have water? @Model.SelectedCoffee.ContainsWater</p>
+
+                @if (Model.SelectedCoffee.CupTypes.Count > 0)
+                {
+                    <p><b>Cup Types</b></p>
+                    <ul>
+                        @foreach (var item in Model.SelectedCoffee.CupTypes)
+                        {
+                            <li>@(item.Name) (@(item.Size)ml)</li>
+                        }
+                    </ul>
+                }
+
+                <p><b>Instructions:</b></p>
+                <p>@Model.SelectedCoffee.GetInstructions()</p>
+
+                @if (Model.SelectedCoffee.ExtraIngredients.Count > 0)
+                {
+                    <p><b>Extra Ingredients</b></p>
+                    <ul>
+                        @foreach (var item in Model.SelectedCoffee.ExtraIngredients)
+                        {
+                            <li>@item.Name</li>
+                        }
+                    </ul>
+                }
+            }
+        </div>
+    </div>
 </div>
